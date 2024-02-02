@@ -1,22 +1,49 @@
 <script setup>
 import { UploadFilled } from '@element-plus/icons-vue'
+
+const form = reactive({
+  title: '',
+  poster: ''
+});
+
+const posterRef = ref()
+
+const onSubmit = () => {
+  ElNotification({
+    title: "Saved",
+    message: `${form.title} was successfuly saved!`
+  })
+
+  form.title = '';
+  form.director = '';
+
+  posterRef.value.clearFiles()
+}
 </script>
 <template>
   <form
-    action=""
     class="container mx-auto mt-5"
+    @submit.prevent="onSubmit"
   >
     <h1 class="text-2xl text-bold">
       Add you onw movie
     </h1>
     <div class="flex gap-4 mt-4">
-      <el-input placeholder="Title" />
-      <el-input placeholder="Director" />
+      <el-input
+        v-model="form.title"
+        placeholder="Title"
+      />
+      <el-input
+        v-model="form.director"
+        placeholder="Director"
+      />
     </div>
 
     <el-upload
+      ref="posterRef"
       class="mt-5"
       drag
+      :auto-upload="false"
     >
       <el-icon class="el-icon--upload">
         <upload-filled />
